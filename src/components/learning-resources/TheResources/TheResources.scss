@@ -1,0 +1,23 @@
+.resourceButton__container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row-reverse;
+
+  button {
+    border-radius: 10px;
+    background-color: transparent;
+    color: #053504;
+    border: 2px solid #053504;
+  }
+
+  button:hover,
+  button:active,
+  .selectedButton{
+    border-radius: 0.5em;
+    background-color: #10580d;
+    color: #fff;
+    border: 2px solid #053504;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);;
+  }
+}

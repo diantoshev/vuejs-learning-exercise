@@ -10,16 +10,6 @@
       rows='4'
       id='resourceDescription'
       placeholder='Add the resource description...'></text-area-input>
-<!--    <div class='form-control'>-->
-<!--      <label for='resourceLink'>Add resource link:</label>-->
-<!--      <input-->
-<!--        id='resourceLink'-->
-<!--        name='resourceLink'-->
-<!--        placeholder='Add the resource link...'-->
-<!--        type='url'-->
-<!--        v-model='linkInput'-->
-<!--      >-->
-<!--    </div>-->
     <text-input
       id='resourceLink'
       input-type='url'

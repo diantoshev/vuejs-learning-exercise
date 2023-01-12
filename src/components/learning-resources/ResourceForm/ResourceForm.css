@@ -1,0 +1,28 @@
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  font: inherit;
+  padding: 0.15rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #053c04;
+  background-color: #d1f0d1;
+}
+
+.errorDescription {
+  color: #e52b2b;
+}
+
+/*# sourceMappingURL=ResourceForm.css.map */

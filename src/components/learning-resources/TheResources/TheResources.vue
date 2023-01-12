@@ -42,7 +42,6 @@ export default {
     };
 
     const storedResourceButtonMode = function() {
-      console.log(selectedTab);
       return selectedTab.value === 'stored-resources' ? 'selectedButton' : null;
     };
 

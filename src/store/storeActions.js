@@ -1,25 +1,32 @@
 export default {
-  getStoredResources(context) {
-    context.commit('getStoredResources');
+  getStoredResources({ commit }) {
+    commit('getStoredResources');
   },
 
-  setSelectedTab(context, payload){
-    context.commit('setSelectedTab', payload);
+  setSelectedTab({ commit }, payload) {
+    commit('setSelectedTab', payload);
   },
 
-  addResource(context, payload) {
-    context.commit({
+  addResource({ commit }, payload) {
+    commit({
       type: 'addResource',
       title: payload.title,
       url: payload.url,
       description: payload.description
-    })
+    });
   },
 
-  deleteResource(context, payload) {
-    context.commit({
-      type: 'deleteResource',
-      id: payload
-    })
+  deleteResource({ commit }, payload) {
+    commit('deleteResource', payload);
+  },
+
+  openEditModal({ commit }) {
+    commit('openEditModal');
+  },
+  closeEditModal({ commit }) {
+    commit('closeEditModal');
+  },
+  setSelectedResourceId({ commit }, payload) {
+    commit('setSelectedResourceId', payload);
   }
 };

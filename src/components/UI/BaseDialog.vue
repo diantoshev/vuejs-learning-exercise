@@ -1,9 +1,9 @@
 <template>
-  <div @click="$emit('close')"></div>
+  <div @click="emits('close')"></div>
   <dialog open>
-    <header :class='headerBackground'>
+    <header :class='props.headerBackground'>
       <slot name='dialog-header'>
-        <h2>{{ title }}</h2>
+        <h2>{{ props.title }}</h2>
       </slot>
     </header>
     <section>
@@ -11,30 +11,27 @@
     </section>
     <menu>
       <slot name='actions'>
-        <base-button @click="$emit('close')"> Close </base-button>
+        <base-button @click="emits('close')"> Close</base-button>
       </slot>
     </menu>
   </dialog>
 </template>
 
-<script>
+<script setup>
 import BaseButton from '@/components/UI/BaseButton.vue';
+import { defineProps, defineEmits } from 'vue';
 
-export default {
-  components: { BaseButton },
-  emits:['close'],
-  name: 'BaseDialog',
-  props: {
-    title: {
-      type: String,
-      required: false
-    },
-    headerBackground: {
-      type: String,
-      required: true
-    }
+const emits = defineEmits(['close']);
+const props = defineProps({
+  title: {
+    type: String,
+    required: false
+  },
+  headerBackground: {
+    type: String,
+    required: true
   }
-};
+});
 </script>
 
 <style scoped>

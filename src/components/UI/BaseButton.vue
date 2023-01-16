@@ -1,16 +1,15 @@
 <template>
-<button :class='mode'>
+<button :class='props.mode'>
   <slot></slot>
 </button>
 </template>
 
-<script>
-export default {
-  name: 'BaseButton',
-  props: {
-    mode: String,
-  }
-};
+<script setup>
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  mode: String
+});
 </script>
 
 <style scoped>

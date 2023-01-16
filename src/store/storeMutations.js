@@ -20,4 +20,13 @@ export default {
     const resIndex = state.storedResources.findIndex(res => res.id === payload);
     state.storedResources.splice(resIndex, 1);
   },
+  openEditModal(state) {
+    state.isEditModalOpen = true;
+  },
+  closeEditModal(state) {
+    state.isEditModalOpen = false;
+  },
+  setSelectedResourceId(state, payload) {
+    state.selectedResourceId = payload;
+  }
 }

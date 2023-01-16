@@ -7,6 +7,8 @@ const store = createStore({
   state() {
     return {
       selectedTab: 'stored-resources',
+      isEditModalOpen: false,
+      selectedResourceId: '',
       storedResources: [
         {
           id: 'official-guide',

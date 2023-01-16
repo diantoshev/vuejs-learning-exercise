@@ -8,17 +8,35 @@
       :rows='rows'
       :placeholder='placeholder'
       v-model='descriptionInput'
+      @input='sendInput'
     ></textarea>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
 export default {
-  name: 'TextAreInput',
+  name: 'TextAreaInput',
+  setup(props, { emit }) {
+    const descriptionInput = ref(props.initialValue || '');
+    const sendInput = () => {
+      return emit('get-description', descriptionInput.value);
+    };
+
+    return {
+      sendInput,
+      descriptionInput
+    };
+  },
   props: {
     id: {
       type: String,
-      required: true,
+      required: true
+    },
+    initialValue: {
+      type: String,
+      required: false,
+      default: null
     },
     textareaLabelText: {
       type: String,
@@ -49,5 +67,5 @@ export default {
 </script>
 
 <style scoped>
-
+@import "./ResourceForm.scss";
 </style>

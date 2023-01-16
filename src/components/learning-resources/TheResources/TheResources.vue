@@ -8,52 +8,34 @@
     </base-button>
   </base-card>
   <keep-alive>
-   <component :is='selectedTab'></component>
+    <component :is="selectedTab === 'stored-resources' ? StoredResources : AddResource"></component>
   </keep-alive>
 </template>
 
-<script>
+<script setup>
 import BaseCard from '@/components/UI/BaseCard.vue';
 import BaseButton from '@/components/UI/BaseButton.vue';
 import StoredResources from '@/components/learning-resources/StoredResources/StoredResources.vue';
 import AddResource from '@/components/learning-resources/AddResource/AddResource.vue';
 import { useStore } from 'vuex';
-import {computed} from 'vue';
+import { computed } from 'vue';
 
-export default {
-  name: 'TheResources',
-  components: {
-    BaseCard,
-    BaseButton,
-    AddResource,
-    StoredResources
-  },
-  setup() {
-    const store = useStore();
-    const selectedTab = computed(function(){
-      return store.getters.getSelectedTab;
-    });
+const store = useStore();
+const selectedTab = computed(function() {
+  return store.getters.getSelectedTab;
+});
 
-    const setSelectedTab = (value) => {
-      store.dispatch('setSelectedTab', value);
-    };
-    const addResourceButtonMode = function() {
-      return selectedTab.value === 'add-resource' ? 'selectedButton' : null;
-    };
-
-    const storedResourceButtonMode = function() {
-      return selectedTab.value === 'stored-resources' ? 'selectedButton' : null;
-    };
-
-    return {
-      selectedTab,
-      addResourceButtonMode,
-      storedResourceButtonMode,
-      setSelectedTab,
-      StoredResources
-    };
-  }
+const setSelectedTab = (value) => {
+  store.dispatch('setSelectedTab', value);
 };
+const addResourceButtonMode = function() {
+  return selectedTab.value === 'add-resource' ? 'selectedButton' : null;
+};
+
+const storedResourceButtonMode = function() {
+  return selectedTab.value === 'stored-resources' ? 'selectedButton' : null;
+};
+
 </script>
 
 <style scoped>

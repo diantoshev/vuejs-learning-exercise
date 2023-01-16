@@ -1,4 +1,8 @@
 <template>
+  <edit-resource-dialog
+    v-if='isEditModalOpen'
+
+  ></edit-resource-dialog>
   <ul>
     <resource-item
       v-for='resource in storedResources'
@@ -11,23 +15,15 @@
   </ul>
 </template>
 
-<script>
+<script setup>
 import ResourceItem from '@/components/learning-resources/ResourceItem/ResourceItem.vue';
 import { useStore } from 'vuex';
-// import { computed } from 'vue';
+import EditResourceDialog from '@/components/learning-resources/EditResource/EditResourceDialog.vue';
+import { computed } from 'vue';
 
-export default {
-  name: 'StoredResources',
-  components: { ResourceItem },
-  setup() {
-    const store = useStore();
-    const storedResources = store.getters.getStoredResources;
-
-    return {
-      storedResources
-    };
-  }
-};
+const store = useStore();
+const storedResources = store.getters.getStoredResources;
+const isEditModalOpen = computed(() => store.getters.getEditModalState);
 </script>
 
 <style scoped>

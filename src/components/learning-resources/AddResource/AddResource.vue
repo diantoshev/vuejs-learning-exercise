@@ -13,112 +13,92 @@
     </template>
   </base-dialog>
   <base-card>
-    <form @submit.prevent='submitData'>
-      <div class='form-control'>
-        <label for='resourceTitle'>Add resource title:</label>
-        <input
-          type='text'
+    <resource-form @submit.prevent='submitData'>
+      <template #formContent>
+        <text-input
           id='resourceTitle'
-          placeholder='Add the resource title...'
-          v-model='titleInput'
-        >
-      </div>
-      <div class='form-control'>
-        <label for='resourceDescription'>Add resource description:</label>
-        <textarea
-          type='text'
-          id='resourceDescription'
-          name='resourceDescription'
+          input-label-text='Add resource title...'
+          input-type='text'
+          placeholder='Add resource title...'
+          @get-text-input='saveTitle'></text-input>
+        <text-area-input
           rows='4'
+          textarea-label-text='Add resource description:'
+          id='resourceDescription'
           placeholder='Add the resource description...'
-          v-model='descriptionInput'
-          ></textarea>
-      </div>
-      <div class='form-control'>
-        <label for='resourceLink'>Add resource link:</label>
-        <input
+          @get-description='saveDescription'></text-area-input>
+        <text-input
           id='resourceLink'
-          name='resourceLink'
+          :value='linkInput'
           placeholder='Add the resource link...'
-          type='url'
-          v-model='linkInput'
-        >
-      </div>
-      <div class='form-control'>
-        <base-button type='submit'>Save resource</base-button>
-      </div>
-    </form>
+          input-label-text='Add resource link:'
+          input-type='url'
+          @get-text-input='saveURLInput'></text-input>
+        <div class='form-control'>
+          <base-button>Save resource</base-button>
+        </div>
+      </template>
+    </resource-form>
   </base-card>
 </template>
 
-<script>
+<script setup>
 import BaseCard from '@/components/UI/BaseCard.vue';
-import BaseButton from '@/components/UI/BaseButton.vue';
 import BaseDialog from '@/components/UI/BaseDialog.vue';
+import ResourceForm from '@/components/learning-resources/ResourceForm/ResourceForm.vue';
+import TextInput from '@/components/learning-resources/ResourceForm/TextInput.vue';
+import BaseButton from '@/components/UI/BaseButton.vue';
+import TextAreaInput from '@/components/learning-resources/ResourceForm/TextAreaInput.vue';
 import { useStore } from 'vuex';
 import { ref } from 'vue';
+import useValidateUrl from '../../../composables/validateURL.js';
+import useValidateInput from '../../../composables/validateForm.js';
 
-export default {
-  name: 'AddResource',
-  components: { BaseDialog, BaseButton, BaseCard },
-  setup() {
-    const inputIsInvalid = ref(false);
-    const errorDescription = ref('');
-    const titleInput = ref('');
-    const descriptionInput = ref('');
-    const linkInput = ref('http://');
-    const store = useStore();
-    // Methods:
+// Varialbles:
+const inputIsInvalid = ref(false);
+const errorDescription = ref('');
+const titleInput = ref('');
+const descriptionInput = ref('');
+const linkInput = ref('http://');
+const store = useStore();
 
-    // Closing alert dialog:
-    const closeDialog = function() {
-      inputIsInvalid.value = false;
+// Closing alert dialog:
+const closeDialog = function() {
+  inputIsInvalid.value = false;
+};
+
+const saveTitle = (value) => {
+  titleInput.value = value;
+};
+
+const saveDescription = (value) => {
+  descriptionInput.value = value;
+};
+
+const saveURLInput = (value) => {
+  linkInput.value = value;
+};
+
+// Submitting data with new resource to store:
+const submitData = function() {
+  if (useValidateInput(titleInput, descriptionInput, linkInput)) {
+    inputIsInvalid.value = true;
+    errorDescription.value = 'All fields must be populated, in order to add resource. Please make sure you have populated all fields.';
+  } else {
+    if (useValidateUrl(linkInput.value)) {
+      store.dispatch('addResource', {
+        title: titleInput.value,
+        description: descriptionInput.value,
+        url: linkInput.value
+      });
+      titleInput.value = '';
+      descriptionInput.value = '';
+      linkInput.value = '';
+    } else {
+      inputIsInvalid.value = true;
+      errorDescription.value = 'The provided url is not valid. Please make sure the URL to the resource is valid. Example - https://www.your-resource.com';
     }
-
-    // Submitting data with new resource to store:
-    const submitData = function() {
-      if (titleInput.value === '' ||
-        descriptionInput.value === '' ||
-        linkInput.value === '') {
-        inputIsInvalid.value = true;
-        errorDescription.value = 'All fields must be populated, in order to add resource. Please make sure you have populated all fields.';
-      } else {
-        if (isUrlValid(linkInput.value)) {
-          store.dispatch('addResource',{ title: titleInput.value, description: descriptionInput.value, url:linkInput.value });
-          titleInput.value = '';
-          descriptionInput.value = '';
-          linkInput.value = '';
-        } else {
-          inputIsInvalid.value = true;
-          errorDescription.value = 'The provided url is not valid. Please make sure the URL to the resource is valid. Example - https://www.your-resource.com';
-        }
-      }
-    }
-    // RegEx to validate URL in submitData() method:
-    const isUrlValid = function(url) {
-      const urlRegex = new RegExp(
-        '^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', // fragment locator
-        'i'
-      );
-      return urlRegex.test(url);
-    }
-
-
-    return {
-      inputIsInvalid,
-      errorDescription,
-      closeDialog,
-      submitData,
-      titleInput,
-      descriptionInput,
-      linkInput
-    };
-  },
+  }
 };
 </script>
 

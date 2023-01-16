@@ -5,12 +5,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'BaseCard'
-};
-</script>
-
 <style scoped>
 .card {
   border-radius: 12px;

@@ -22,6 +22,9 @@
   textarea:focus {
     outline: none;
     border-color: #053c04;
-    background-color: #d1f0d1;
+  }
+
+  .errorDescription {
+    color: red;
   }
 }
